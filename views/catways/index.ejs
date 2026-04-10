@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Catways</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/dashboard"> Tableau de bord</a> |
+    <a href="/logout">Se déconnecter</a>
+  </nav>
+
+  <h1> Gestion des catways</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <!-- Formulaire d'ajout -->
+  <h2>Ajouter un catway</h2>
+  <form action="/catways/page/add" method="POST">
+    <label>Numéro</label><br>
+    <input type="number" name="catwayNumber" required /><br><br>
+    <label>Type</label><br>
+    <select name="catwayType">
+      <option value="long">Long</option>
+      <option value="short">Short</option>
+    </select><br><br>
+    <label>État</label><br>
+    <input type="text" name="catwayState" required /><br><br>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <hr>
+
+  <!-- Liste des catways -->
+  <h2>Liste des catways</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Numéro</th>
+        <th>Type</th>
+        <th>État</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (catways.length === 0) { %>
+        <tr><td colspan="4">Aucun catway</td></tr>
+      <% } else { %>
+        <% catways.forEach(c => { %>
+          <tr>
+            <td><%= c.catwayNumber %></td>
+            <td><%= c.catwayType %></td>
+            <td>
+              <!-- Formulaire modification état inline -->
+              <form action="/catways/page/edit/<%= c._id %>" method="POST" style="display:inline">
+                <input type="text" name="catwayState" value="<%= c.catwayState %>" />
+                <button type="submit">✏️</button>
+              </form>
+            </td>
+            <td>
+              <a href="/catways/page/<%= c._id %>"> Détail</a>
+              &nbsp;
+              <form action="/catways/page/delete/<%= c._id %>" method="POST" style="display:inline"
+                onsubmit="return confirm('Supprimer ce catway ?')">
+                <button type="submit">🗑️</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+</body>
+</html>

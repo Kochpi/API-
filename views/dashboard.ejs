@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tableau de bord</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/catways">Catways</a> |
+    <a href="/reservations">Réservations</a> |
+    <a href="/users">Utilisateurs</a> |
+    <a href="/api-docs">Documentation API</a> |
+    <a href="/logout">Se déconnecter</a>
+  </nav>
+
+  <h1>Tableau de bord</h1>
+  <p>👤 <%= user.username %> — <%= user.email %></p>
+  <p>📅 <%= date %></p>
+
+  <h2>Réservations en cours</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Catway</th>
+        <th>Client</th>
+        <th>Bateau</th>
+        <th>Début</th>
+        <th>Fin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (reservations.length === 0) { %>
+        <tr><td colspan="5">Aucune réservation en cours</td></tr>
+      <% } else { %>
+        <% reservations.forEach(r => { %>
+          <tr>
+            <td><%= r.catwayNumber %></td>
+            <td><%= r.clientName %></td>
+            <td><%= r.boatName %></td>
+            <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
+            <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+</body>
+</html>

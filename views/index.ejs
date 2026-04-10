@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Port de plaisance</title>
+</head>
+<body>
+
+  <h1> Port de plaisance — Capitainerie</h1>
+  <p>Bienvenue sur l'application de gestion des catways et réservations du port.</p>
+
+  <% if (typeof error !== 'undefined') { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <h2>Connexion</h2>
+  <form action="/login" method="POST">
+    <label>Email</label><br>
+    <input type="email" name="email" required /><br><br>
+    <label>Mot de passe</label><br>
+    <input type="password" name="password" required /><br><br>
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <br>
+  <a href="/api-docs">📄 Documentation de l'API</a>
+
+</body>
+</html>
