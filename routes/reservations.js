@@ -1,63 +1,55 @@
 const express = require("express");
-const router = express.Router({ mergeParams: true }); // important pour récupérer :id du catway
+const router = express.Router();
 const service = require("../Services/reservations");
+const private = require("../middlewares/private");
 
-// GET /catways/:id/reservations
-router.get("/", async (req, res) => {
+// Liste toutes les réservations
+router.get("/all", private.checkJWT, async (req, res) => {
   try {
-    const reservations = await service.getAll(req.params.id);
-    res.status(200).json(reservations);
+    const reservations = await service.getAllReservations();
+    res.render("reservations/index", { reservations, error: null });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.redirect("/dashboard");
   }
 });
 
-// GET /catways/:id/reservations/:idReservation
-router.get("/:idReservation", async (req, res) => {
+// Détail d'une réservation
+router.get("/:id", private.checkJWT, async (req, res) => {
   try {
-    const reservation = await service.getById(req.params.idReservation);
-    if (!reservation)
-      return res.status(404).json({ message: "Réservation non trouvée" });
-    res.status(200).json(reservation);
+    const reservation = await service.getById(req.params.id);
+    res.render("reservations/detail", { reservation });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.redirect("/reservations/all");
   }
 });
 
-// POST /catways/:id/reservations
-router.post("/", async (req, res) => {
+router.post("/add", private.checkJWT, async (req, res) => {
   try {
-    const reservation = await service.create(req.params.id, req.body);
-    res.status(201).json(reservation);
+    await service.create(req.body.catwayNumber, req.body); // 👈
+    res.redirect("/reservations/all");
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    const reservations = await service.getAllReservations();
+    res.render("reservations/index", { reservations, error: err.message });
   }
 });
 
-// PUT /catways/:id/reservations/:idReservation
-router.put("/:idReservation", async (req, res) => {
+// Modifier une réservation
+router.post("/edit/:id", private.checkJWT, async (req, res) => {
   try {
-    const reservation = await service.update(
-      req.params.idReservation,
-      req.body,
-    );
-    if (!reservation)
-      return res.status(404).json({ message: "Réservation non trouvée" });
-    res.status(200).json(reservation);
+    await service.update(req.params.id, req.body);
+    res.redirect("/reservations/all");
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.redirect("/reservations/all");
   }
 });
 
-// DELETE /catways/:id/reservations/:idReservation
-router.delete("/:idReservation", async (req, res) => {
+// Supprimer une réservation
+router.post("/delete/:id", private.checkJWT, async (req, res) => {
   try {
-    const reservation = await service.remove(req.params.idReservation);
-    if (!reservation)
-      return res.status(404).json({ message: "Réservation non trouvée" });
-    res.status(200).json({ message: "Réservation supprimée" });
+    await service.remove(req.params.id);
+    res.redirect("/reservations/all");
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.redirect("/reservations/all");
   }
 });
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détail réservation</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/reservations/page/all">← Retour aux réservations</a> |
+    <a href="/dashboard"> Tableau de bord</a>
+  </nav>
+
+  <h1> Réservation</h1>
+  <p><strong>Catway n° :</strong> <%= reservation.catwayNumber %></p>
+  <p><strong>Client :</strong> <%= reservation.clientName %></p>
+  <p><strong>Bateau :</strong> <%= reservation.boatName %></p>
+  <p><strong>Début :</strong> <%= new Date(reservation.startDate).toLocaleDateString('fr-FR') %></p>
+  <p><strong>Fin :</strong> <%= new Date(reservation.endDate).toLocaleDateString('fr-FR') %></p>
+
+  <!-- Formulaire de modification -->
+  <h2>Modifier</h2>
+  <form action="/reservations/page/edit/<%= reservation._id %>" method="POST">
+    <label>Nom du client</label><br>
+    <input type="text" name="clientName" value="<%= reservation.clientName %>" required /><br><br>
+    <label>Nom du bateau</label><br>
+    <input type="text" name="boatName" value="<%= reservation.boatName %>" required /><br><br>
+    <label>Date de début</label><br>
+    <input type="date" name="startDate" value="<%= reservation.startDate.toISOString().split('T')[0] %>" required /><br><br>
+    <label>Date de fin</label><br>
+    <input type="date" name="endDate" value="<%= reservation.endDate.toISOString().split('T')[0] %>" required /><br><br>
+    <button type="submit">Modifier</button>
+  </form>
+
+</body>
+</html>

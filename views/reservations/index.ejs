@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Réservations</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/dashboard"> Tableau de bord</a> |
+    <a href="/logout">Se déconnecter</a>
+  </nav>
+
+  <h1>📋 Gestion des réservations</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <!-- Formulaire d'ajout -->
+  <h2>Ajouter une réservation</h2>
+  <form action="/reservations/page/add" method="POST">
+    <label>Numéro de catway</label><br>
+    <input type="number" name="catwayNumber" required /><br><br>
+    <label>Nom du client</label><br>
+    <input type="text" name="clientName" required /><br><br>
+    <label>Nom du bateau</label><br>
+    <input type="text" name="boatName" required /><br><br>
+    <label>Date de début</label><br>
+    <input type="date" name="startDate" required /><br><br>
+    <label>Date de fin</label><br>
+    <input type="date" name="endDate" required /><br><br>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <hr>
+
+  <!-- Liste des réservations -->
+  <h2>Liste des réservations</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Catway</th>
+        <th>Client</th>
+        <th>Bateau</th>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (reservations.length === 0) { %>
+        <tr><td colspan="6">Aucune réservation</td></tr>
+      <% } else { %>
+        <% reservations.forEach(r => { %>
+          <tr>
+            <td><%= r.catwayNumber %></td>
+            <td><%= r.clientName %></td>
+            <td><%= r.boatName %></td>
+            <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
+            <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
+            <td>
+              <a href="/reservations/page/<%= r._id %>"> Détail</a>
+              &nbsp;
+              <form action="/reservations/page/delete/<%= r._id %>" method="POST" style="display:inline"
+                onsubmit="return confirm('Supprimer cette réservation ?')">
+                <button type="submit">🗑️</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+</body>
+</html>

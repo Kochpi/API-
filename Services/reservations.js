@@ -1,6 +1,10 @@
 const Reservation = require("../models/reservation");
 const Catway = require("../models/catway");
 
+exports.getAllReservations = async () => {
+  return await Reservation.find();
+};
+
 // Lister toutes les réservations d'un catway
 exports.getAll = async (catwayNumber) => {
   return await Reservation.find({ catwayNumber });
