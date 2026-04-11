@@ -5,47 +5,53 @@ const auth = require("../middlewares/private");
 
 /**
  * @module Catways
+ * @description Gestion des catways du port de plaisance
  */
 
 /**
- * @route GET /catways
- * @description Liste tous les catways
- * @access Privé
+ * Liste tous les catways
+ * @name GET /catways
+ * @function
+ * @memberof module:Catways
  */
 router.get("/", auth.checkJWT, service.getAll);
 
 /**
- * @route GET /catways/:id
- * @description Récupère un catway par son id
+ * Récupère un catway par son id
+ * @name GET /catways/:id
+ * @function
+ * @memberof module:Catways
  * @param {string} id - L'identifiant du catway
- * @access Privé
  */
 router.get("/:id", auth.checkJWT, service.getById);
 
 /**
- * @route POST /catways
- * @description Crée un nouveau catway
+ * Crée un nouveau catway
+ * @name POST /catways
+ * @function
+ * @memberof module:Catways
  * @param {number} catwayNumber - Le numéro du catway
  * @param {string} catwayType - Le type (long/short)
  * @param {string} catwayState - L'état du catway
- * @access Privé
  */
 router.post("/", auth.checkJWT, service.add);
 
 /**
- * @route PUT /catways/:id
- * @description Modifie l'état d'un catway
+ * Modifie l'état d'un catway
+ * @name PUT /catways/:id
+ * @function
+ * @memberof module:Catways
  * @param {string} id - L'identifiant du catway
  * @param {string} catwayState - Le nouvel état
- * @access Privé
  */
 router.put("/:id", auth.checkJWT, service.update);
 
 /**
- * @route DELETE /catways/:id
- * @description Supprime un catway
+ * Supprime un catway
+ * @name DELETE /catways/:id
+ * @function
+ * @memberof module:Catways
  * @param {string} id - L'identifiant du catway
- * @access Privé
  */
 router.delete("/:id", auth.checkJWT, service.delete);
 
