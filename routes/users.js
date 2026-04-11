@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const service = require("../Services/users");
-const private = require("../middlewares/private");
+const auth = require("../middlewares/private");
 
 // POST /login
 router.post("/login", async (req, res) => {
@@ -26,7 +26,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.get("/dashboard", private.checkJWT, async (req, res) => {
+router.get("/dashboard", auth.checkJWT, async (req, res) => {
   try {
     const reservations = await service.getReservationsEnCours();
     res.render("dashboard", {
@@ -42,7 +42,7 @@ router.get("/dashboard", private.checkJWT, async (req, res) => {
 // ---- Routes EJS users ----
 
 // Liste tous les utilisateurs
-router.get("/all", private.checkJWT, async (req, res) => {
+router.get("/all", auth.checkJWT, async (req, res) => {
   try {
     const users = await service.getAllUsers();
     res.render("users/index", { users, error: null });
@@ -52,7 +52,7 @@ router.get("/all", private.checkJWT, async (req, res) => {
 });
 
 // Détail d'un utilisateur par email
-router.get("/detail/:email", private.checkJWT, async (req, res) => {
+router.get("/detail/:email", auth.checkJWT, async (req, res) => {
   try {
     const user = await service.getByEmail(req.params.email);
     if (!user) return res.redirect("/users/all");
@@ -63,7 +63,7 @@ router.get("/detail/:email", private.checkJWT, async (req, res) => {
 });
 
 // Créer un utilisateur
-router.post("/page/add", private.checkJWT, async (req, res) => {
+router.post("/page/add", auth.checkJWT, async (req, res) => {
   try {
     await service.createUser(req.body);
     res.redirect("/users/all");
@@ -74,7 +74,7 @@ router.post("/page/add", private.checkJWT, async (req, res) => {
 });
 
 // Modifier un utilisateur
-router.post("/page/edit/:email", private.checkJWT, async (req, res) => {
+router.post("/page/edit/:email", auth.checkJWT, async (req, res) => {
   try {
     await service.updateByEmail(req.params.email, req.body);
     res.redirect("/users/all");
@@ -84,7 +84,7 @@ router.post("/page/edit/:email", private.checkJWT, async (req, res) => {
 });
 
 // Supprimer un utilisateur
-router.post("/page/delete/:email", private.checkJWT, async (req, res) => {
+router.post("/page/delete/:email", auth.checkJWT, async (req, res) => {
   try {
     await service.deleteByEmail(req.params.email);
     res.redirect("/users/all");
@@ -93,10 +93,10 @@ router.post("/page/delete/:email", private.checkJWT, async (req, res) => {
   }
 });
 
-router.get("/:id", private.checkJWT, service.getById);
+router.get("/:id", auth.checkJWT, service.getById);
 router.post("/add", service.add);
-router.patch("/:id", private.checkJWT, service.update);
-router.delete("/:id", private.checkJWT, service.delete);
+router.patch("/:id", auth.checkJWT, service.update);
+router.delete("/:id", auth.checkJWT, service.delete);
 router.post("/authenticate", service.authenticate);
 
 module.exports = router;
