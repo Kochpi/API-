@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Utilisateurs</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/dashboard"> Tableau de bord</a> |
+    <a href="/logout">Se déconnecter</a>
+  </nav>
+
+  <h1> Gestion des utilisateurs</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <!-- Formulaire d'ajout -->
+  <h2>Ajouter un utilisateur</h2>
+  <form action="/users/page/add" method="POST">
+    <label>Nom d'utilisateur</label><br>
+    <input type="text" name="username" required /><br><br>
+    <label>Email</label><br>
+    <input type="email" name="email" required /><br><br>
+    <label>Mot de passe</label><br>
+    <input type="password" name="password" required /><br><br>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <hr>
+
+  <!-- Liste des utilisateurs -->
+  <h2>Liste des utilisateurs</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (users.length === 0) { %>
+        <tr><td colspan="3">Aucun utilisateur</td></tr>
+      <% } else { %>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><%= u.username %></td>
+            <td><%= u.email %></td>
+            <td>
+              <a href="/users/detail/<%= u.email %>"> Détail</a>
+              &nbsp;
+              <form action="/users/page/delete/<%= u.email %>" method="POST" style="display:inline"
+                onsubmit="return confirm('Supprimer cet utilisateur ?')">
+                <button type="submit">🗑️</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+</body>
+</html>

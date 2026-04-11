@@ -4,6 +4,35 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY;
 const Reservation = require("../models/reservation");
 
+// Fonctions pour les pages EJS (par email)
+exports.getAllUsers = async () => {
+  return await User.find({}, "-password"); // on cache le mot de passe
+};
+
+exports.getByEmail = async (email) => {
+  return await User.findOne({ email }, "-password");
+};
+
+exports.createUser = async (data) => {
+  const user = new User(data);
+  return await user.save();
+};
+
+exports.updateByEmail = async (email, data) => {
+  const user = await User.findOne({ email });
+  if (!user) throw new Error("Utilisateur non trouvé");
+
+  Object.keys(data).forEach((key) => {
+    if (!!data[key]) user[key] = data[key];
+  });
+
+  return await user.save(); // déclenche le hash bcrypt automatiquement
+};
+
+exports.deleteByEmail = async (email) => {
+  return await User.deleteOne({ email });
+};
+
 exports.getById = async (req, res, next) => {
   const id = req.params.id;
 

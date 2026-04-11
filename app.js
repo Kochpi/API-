@@ -35,6 +35,7 @@ app.set("views", path.join(__dirname, "views"));
 // Routes
 app.get("/", (req, res) => res.render("index"));
 app.use("/", usersRouter);
+app.use("/users", usersRouter);
 app.use("/catways", catwayRouter);
 app.use("/reservations", reservationsRouter);
 

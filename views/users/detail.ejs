@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détail utilisateur</title>
+</head>
+<body>
+
+  <nav>
+    <a href="/users/all">← Retour aux utilisateurs</a> |
+    <a href="/dashboard"> Tableau de bord</a>
+  </nav>
+
+  <h1> <%= user.username %></h1>
+  <p><strong>Email :</strong> <%= user.email %></p>
+
+  <!-- Formulaire de modification -->
+  <h2>Modifier</h2>
+  <form action="/users/page/edit/<%= user.email %>" method="POST">
+    <label>Nom d'utilisateur</label><br>
+    <input type="text" name="username" value="<%= user.username %>" /><br><br>
+    <label>Email</label><br>
+    <input type="email" name="email" value="<%= user.email %>" /><br><br>
+    <label>Nouveau mot de passe (laisser vide pour ne pas changer)</label><br>
+    <input type="password" name="password" /><br><br>
+    <button type="submit">Modifier</button>
+  </form>
+
+</body>
+</html>
