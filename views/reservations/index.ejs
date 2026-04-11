@@ -11,7 +11,7 @@
     <a href="/logout">Se déconnecter</a>
   </nav>
 
-  <h1>📋 Gestion des réservations</h1>
+  <h1> Gestion des réservations</h1>
 
   <% if (error) { %>
     <p style="color:red;"><%= error %></p>
@@ -19,7 +19,7 @@
 
   <!-- Formulaire d'ajout -->
   <h2>Ajouter une réservation</h2>
-  <form action="/reservations/page/add" method="POST">
+  <form action="/reservations/add" method="POST">
     <label>Numéro de catway</label><br>
     <input type="number" name="catwayNumber" required /><br><br>
     <label>Nom du client</label><br>
@@ -60,9 +60,9 @@
             <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
             <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
             <td>
-              <a href="/reservations/page/<%= r._id %>"> Détail</a>
+              <a href="/reservations/<%= r._id %>"> Détail</a>
               &nbsp;
-              <form action="/reservations/page/delete/<%= r._id %>" method="POST" style="display:inline"
+              <form action="/reservations/delete/<%= r._id %>" method="POST" style="display:inline"
                 onsubmit="return confirm('Supprimer cette réservation ?')">
                 <button type="submit">🗑️</button>
               </form>

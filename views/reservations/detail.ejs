@@ -7,7 +7,7 @@
 <body>
 
   <nav>
-    <a href="/reservations/page/all">← Retour aux réservations</a> |
+    <a href="/reservations/all">← Retour aux réservations</a> |
     <a href="/dashboard"> Tableau de bord</a>
   </nav>
 
@@ -20,7 +20,7 @@
 
   <!-- Formulaire de modification -->
   <h2>Modifier</h2>
-  <form action="/reservations/page/edit/<%= reservation._id %>" method="POST">
+  <form action="/reservations/edit/<%= reservation._id %>" method="POST">
     <label>Nom du client</label><br>
     <input type="text" name="clientName" value="<%= reservation.clientName %>" required /><br><br>
     <label>Nom du bateau</label><br>
