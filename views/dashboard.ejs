@@ -15,8 +15,11 @@
   </nav>
 
   <h1>Tableau de bord</h1>
-  <p>👤 <%= user.username %> — <%= user.email %></p>
-  <p>📅 <%= date %></p>
+  <p><%= user.username %> — <%= user.email %></p>
+  <p><%= date %></p>
+  <p>Bienvenue sur ma première API vous permettant de gérer des catways. Vous pourrez dans la barre nav acceder au crud des catways, des réservations et des utilisateurs. Vous pourrez aussi 
+    accéder à la documentation de l'API utilisée avec swagger et yaml. Les dépendances utilisées seront visibles dans mon package.json directement sur GitHub.
+    Pour modifier un catway, une résa ou un user ils vous faudra cliquer sur "detail", pour supprimer la poubelle. La session sera valable 24h avant de vous reconnecter.   </p>
 
   <h2>Réservations en cours</h2>
   <table border="1">
