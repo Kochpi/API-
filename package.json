@@ -19,7 +19,9 @@
     "mongoose": "^9.3.3",
     "morgan": "~1.9.1",
     "nodemon": "^3.1.14",
-    "serve-favicon": "^2.5.1"
+    "serve-favicon": "^2.5.1",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "env-cmd": "^11.0.0"

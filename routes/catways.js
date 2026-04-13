@@ -3,58 +3,6 @@ var router = express.Router();
 const service = require("../Services/catways");
 const auth = require("../middlewares/private");
 
-/**
- * @module Catways
- * @description Gestion des catways du port de plaisance
- */
-
-/**
- * Liste tous les catways
- * @name GET /catways
- * @function
- * @memberof module:Catways
- */
-router.get("/", auth.checkJWT, service.getAll);
-
-/**
- * Récupère un catway par son id
- * @name GET /catways/:id
- * @function
- * @memberof module:Catways
- * @param {string} id - L'identifiant du catway
- */
-router.get("/:id", auth.checkJWT, service.getById);
-
-/**
- * Crée un nouveau catway
- * @name POST /catways
- * @function
- * @memberof module:Catways
- * @param {number} catwayNumber - Le numéro du catway
- * @param {string} catwayType - Le type (long/short)
- * @param {string} catwayState - L'état du catway
- */
-router.post("/", auth.checkJWT, service.add);
-
-/**
- * Modifie l'état d'un catway
- * @name PUT /catways/:id
- * @function
- * @memberof module:Catways
- * @param {string} id - L'identifiant du catway
- * @param {string} catwayState - Le nouvel état
- */
-router.put("/:id", auth.checkJWT, service.update);
-
-/**
- * Supprime un catway
- * @name DELETE /catways/:id
- * @function
- * @memberof module:Catways
- * @param {string} id - L'identifiant du catway
- */
-router.delete("/:id", auth.checkJWT, service.delete);
-
 // Page principale catways
 router.get("/page/all", auth.checkJWT, async (req, res) => {
   try {

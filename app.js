@@ -3,6 +3,9 @@ const favicon = require("serve-favicon");
 var path = require("path");
 var logger = require("morgan");
 const cookieSession = require("cookie-session");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./docs/swagger.yaml");
 
 // Imports des routes
 var indexRouter = require("./routes/index");
@@ -33,6 +36,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Routes
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get("/", (req, res) => res.render("index"));
 app.use("/", usersRouter);
 app.use("/users", usersRouter);
