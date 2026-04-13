@@ -5,19 +5,41 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const Reservation = require("../models/reservation");
 
 // Fonctions pour les pages EJS (par email)
+
+/**
+ * Récupère tous les utilisateurs (sans mot de passe)
+ * @returns {Promise<Object[]>} Liste des utilisateurs
+ */
 exports.getAllUsers = async () => {
   return await User.find({}, "-password"); // on cache le mot de passe
 };
 
+/**
+ * Récupère un utilisateur par email (sans mot de passe)
+ * @param {string} email - Email de l'utilisateur
+ * @returns {Promise<Object|null>} Utilisateur trouvé ou null
+ */
 exports.getByEmail = async (email) => {
   return await User.findOne({ email }, "-password");
 };
 
+/**
+ * Crée un nouvel utilisateur
+ * @param {UserData} data - Données de l'utilisateur
+ * @returns {Promise<Object>} Utilisateur créé
+ */
 exports.createUser = async (data) => {
   const user = new User(data);
   return await user.save();
 };
 
+/**
+ * Met à jour un utilisateur via son email
+ * @param {string} email - Email de l'utilisateur
+ * @param {Partial<UserData>} data - Données à mettre à jour
+ * @throws {Error} Si l'utilisateur n'existe pas
+ * @returns {Promise<Object>} Utilisateur mis à jour
+ */
 exports.updateByEmail = async (email, data) => {
   const user = await User.findOne({ email });
   if (!user) throw new Error("Utilisateur non trouvé");
@@ -26,13 +48,26 @@ exports.updateByEmail = async (email, data) => {
     if (!!data[key]) user[key] = data[key];
   });
 
-  return await user.save(); // déclenche le hash bcrypt automatiquement
+  return await user.save();
 };
 
+/**
+ * Supprime un utilisateur via son email
+ * @param {string} email - Email de l'utilisateur
+ * @returns {Promise<Object>} Résultat de la suppression
+ */
 exports.deleteByEmail = async (email) => {
   return await User.deleteOne({ email });
 };
 
+/**
+ * Récupère un utilisateur par son ID
+ * @route GET /users/:id
+ * @param {Object} req.params - Paramètres de route
+ * @param {string} req.params.id - ID de l'utilisateur
+ * @returns {Object} Utilisateur trouvé
+ * @returns {string} Message si non trouvé
+ */
 exports.getById = async (req, res, next) => {
   const id = req.params.id;
 
@@ -49,6 +84,15 @@ exports.getById = async (req, res, next) => {
   }
 };
 
+/**
+ * Crée un nouvel utilisateur
+ * @route POST /users
+ * @param {Object} req.body - Données de l'utilisateur
+ * @param {string} req.body.username - Nom d'utilisateur
+ * @param {string} req.body.email - Email
+ * @param {string} req.body.password - Mot de passe
+ * @returns {Object} Utilisateur créé
+ */
 exports.add = async (req, res, next) => {
   console.log("body reçu :", req.body);
   const temp = {
@@ -67,6 +111,18 @@ exports.add = async (req, res, next) => {
   }
 };
 
+/**
+ * Met à jour un utilisateur
+ * @route PUT /users/:id
+ * @param {Object} req.params - Paramètres de route
+ * @param {string} req.params.id - ID de l'utilisateur
+ * @param {Object} req.body - Données à mettre à jour
+ * @param {string} [req.body.username] - Nom d'utilisateur
+ * @param {string} [req.body.email] - Email
+ * @param {string} [req.body.password] - Mot de passe
+ * @returns {Object} Utilisateur mis à jour
+ * @returns {string} Message si non trouvé
+ */
 exports.update = async (req, res, next) => {
   const id = req.params.id;
   const temp = {
@@ -95,6 +151,14 @@ exports.update = async (req, res, next) => {
   }
 };
 
+/**
+ * Supprimer un utilisateur
+ * @route DELETE /users/:id
+ * @param {Object} req.params Paramètre de route
+ * @param {String} req.params.id ID de l'utilisateur
+ * @returns {Object} Utilisateur supprimé
+ * @returns {String} Error 501 si non trouvé
+ */
 exports.delete = async (req, res, next) => {
   const id = req.params.id;
 
@@ -106,6 +170,7 @@ exports.delete = async (req, res, next) => {
     return res.status(501).json(error);
   }
 };
+
 exports.authenticate = async (req, res, next) => {
   const { email, password } = req.body;
   const SECRET_KEY = process.env.SECRET_KEY;
